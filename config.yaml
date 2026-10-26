@@ -1,0 +1,105 @@
+paths:
+  feature_parquet: data/feature_stack_3D_event_xylabel.parquet
+  attribute_parquet: data/属性_with_label.parquet
+  baseline_score_tsv: data/historical_baseline.tsv
+  output_dir: outputs
+
+grid:
+  dx: 10.0
+  dy: 10.0
+  dz: 1.0
+  model_rebin_z: 1
+  depth_increases_with_z: false
+
+audit:
+  full_alignment_check: true
+
+validation:
+  positive_labels: [0, 1]
+  strong_positive_labels: [1]
+  volume_rates:
+    - 0.0001
+    - 0.0002
+    - 0.0005
+    - 0.00075
+    - 0.001
+    - 0.002
+    - 0.003
+    - 0.005
+    - 0.0075
+    - 0.01
+    - 0.015
+    - 0.02
+    - 0.03
+    - 0.04
+    - 0.05
+    - 0.06
+    - 0.07
+    - 0.08
+    - 0.09
+    - 0.10
+    - 0.11
+    - 0.12
+    - 0.13
+    - 0.14
+    - 0.15
+    - 0.16
+    - 0.17
+    - 0.18
+    - 0.19
+    - 0.20
+    - 0.21
+    - 0.22
+    - 0.23
+    - 0.24
+    - 0.25
+    - 0.26
+    - 0.27
+    - 0.28
+    - 0.29
+    - 0.30
+  threshold_rule: 80_percent_of_hmax
+
+model:
+  n_splits: 5
+  split_axis: auto
+  fold_buffer_cells: 4
+  seeds: [42, 52, 62]
+  u_sample_per_batch: 50000
+  weights:
+    1: 9.0
+    0: 6.0
+    -2: 2.0
+    -1: 1.0
+  device: auto
+  n_jobs: -1
+  xgboost:
+    objective: binary:logistic
+    eval_metric: aucpr
+    tree_method: hist
+    max_depth: 6
+    learning_rate: 0.05
+    subsample: 0.85
+    colsample_bytree: 0.85
+    n_estimators: 500
+
+score:
+  kappas: [0.0, 0.5, 1.0]
+  main_kappa: 0.5
+
+targets:
+  main_connectivity: 26
+  compare_connectivity: [6, 18, 26]
+  min_component_cells: [10, 30, 50]
+  main_min_component_cells: 30
+  # Neighbouring target volumes are symmetric on the log-volume scale.
+  persistence_ratio: 1.5
+  compare_closing: true
+
+runtime:
+  resume: true
+  batch_size: 500000
+  prediction_batch_size: 500000
+  array_chunk_rows: 5000000
+  max_rows: null
+  keep_sensitivity_labels: false

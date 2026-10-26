@@ -1,0 +1,21 @@
+# Restricted inputs and generated outputs
+data/
+outputs/
+*.parquet
+*.csv
+*.tsv
+*.npy
+*.dat
+*.pt
+
+# Local environments and generated Python files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Local logs and secrets
+*.log
+.env
+.env.*
+!.env.example
